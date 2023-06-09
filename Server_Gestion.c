@@ -5,10 +5,22 @@ void Server_Response(int new_socket, char *uri, char *buff,
                      char *orig_path, char *button, char *method, DirLinkedList *list,
                      int list_len)
 {
-    printf("Entro a respuesta de la peticion");
+#pragma region Comparer
+    // Arreglo que contiene los comparadores
+    int (*comparer[8])(DirLinkedList *, DirLinkedList *);
+    comparer[0] = NameCompare;
+    comparer[1] = NameRCompare;
+    comparer[2] = SizeCompare;
+    comparer[3] = SizeRCompare;
+    comparer[4] = DateMCompare;
+    comparer[5] = DateMRCompare;
+    comparer[6] = TypeCompare;
+    comparer[7] = TypeRCompare;
+
+#pragma endregion
+
     uri = Uri_parser(uri);
     buff = NULL;
-    printf(" Check 1");
     // Si es la misma dirección que se paso como entrada
     if (strcmp(uri, orig_path) != 0)
     {
@@ -20,7 +32,6 @@ void Server_Response(int new_socket, char *uri, char *buff,
     // Si el tipo de petición es Get
     if (strcmp(method, "GET") == 0)
     {
-        printf("invi");
         Get_Petition(new_socket, uri, orig_path, list, list_len, button);
     }
     // Caso petición "Post"
@@ -40,7 +51,7 @@ void Server_Response(int new_socket, char *uri, char *buff,
         {
             nxt = '0';
         }
-        HTMLresponse(list, uri, connected_fd, button, nxt);
+        HTMLresponse(list, uri, new_socket, button, nxt);
     }
 
     else
@@ -69,7 +80,10 @@ void Get_Petition(int new_socket, char *uri, char *orig_path, DirLinkedList *lis
             // Genera el html con la respuesta
             HTMLresponse(list, uri, new_socket, button, '0');
         }
-        // Implementar las descargas de archivos
+        else // En caso de ser un archivo que se pueda descargar
+        {
+            Download(new_socket, uri, folder.st_size);
+        }
     }
     else if (strstr(uri, orig_path) != NULL)
     {
