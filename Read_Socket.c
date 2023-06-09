@@ -1,6 +1,10 @@
 #include <unistd.h>
 #include <errno.h>
-#include "Read_Write_Socket.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+#include "Read_Socket.h"
 
 char *ReadRequest(int fd, int n)
 {
@@ -37,7 +41,7 @@ char *ReadRequest(int fd, int n)
          if (errno == EINTR)
             nread = 0;
          else
-            return -1;
+            return NULL;
       }
       // Si no se leyó mas bites o se alcanzo el final del mensaje se sale del bucle
       else if (nread == 0 || strncmp(bufp + nread - 4, "\r\n\r\n", 4) == 0)
@@ -52,27 +56,4 @@ char *ReadRequest(int fd, int n)
    } while (1);
 
    return usrbuf;
-}
-
-int WriteResponse(int fd, void *usrbuf, size_t n)
-{
-   size_t nleft = n;
-   ssize_t nwritten;
-   char *bufp = usrbuf;
-
-   while (nleft > 0)
-   {
-      if ((nwritten = write(fd, bufp, nleft)) <= 0)
-      {
-         if (errno == EINTR) /* Interrupted by sig handler return */
-            nwritten = 0;
-         else
-            /* and call write() again */
-            return -1;
-         /* errno set by write() */
-      }
-      nleft -= nwritten;
-      bufp += nwritten;
-   }
-   return n;
 }

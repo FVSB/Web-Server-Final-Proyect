@@ -18,12 +18,12 @@ struct Server
 
    struct sockaddr_in address;
 
-   void (*launch)(struct Server *server, char **orig_path);
+   void (*launch)(struct Server *server, char *orig_path);
 
    int socket;
 };
 
 struct Server server_constructor(int domain, int service, int protocol,
-                                 unsigned long interface, int port, int backlog, void (*launch)(struct Server *server, char **orig_path));
+                                 unsigned long interface, int port, int backlog, void (*launch)(struct Server *server, char *orig_path));
 
 #endif /*Server_h*/

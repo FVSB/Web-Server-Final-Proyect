@@ -10,7 +10,7 @@
 // Implementacion de la estructura Server
 
 struct Server server_constructor(int domain, int service, int protocol, unsigned long interface,
-                                 int port, int backlog, void (*launch)(struct Server *server, char **orig_path))
+                                 int port, int backlog, void (*launch)(struct Server *server, char *orig_path))
 {
     struct Server server;
     server.domain = domain;
@@ -33,8 +33,9 @@ struct Server server_constructor(int domain, int service, int protocol, unsigned
     struct sockaddr_in tempAddress;
     tempAddress.sin_family = domain;
     tempAddress.sin_port = htons(port);
-    tempAddress.sin_addr.s_addr = htonl(interface);
-
+    // tempAddress.sin_addr.s_addr = htonl(interface);
+    // Aca se deja seleccionar manualmente que direccion se quiere
+    tempAddress.sin_addr.s_addr = inet_addr("127.0.0.1"); // Dirección IP del servidor
     if (bind(server.socket, (struct sockaddr *)&tempAddress, sizeof(tempAddress)) == -1)
     {
         if (errno == EADDRINUSE)
@@ -53,7 +54,9 @@ struct Server server_constructor(int domain, int service, int protocol, unsigned
 
     server.address.sin_family = domain;
     server.address.sin_port = htons(port);
-    server.address.sin_addr.s_addr = htonl(interface);
+    // server.address.sin_addr.s_addr = htonl(interface);
+    // Aca se deja seleccionar manualmente que direccion se quiere
+    server.address.sin_addr.s_addr = inet_addr("127.0.0.1"); // Dirección IP del servidor
 
     // Esperar a que se conecte el cliente
     if (listen(server.socket, backlog) == -1)
@@ -64,6 +67,9 @@ struct Server server_constructor(int domain, int service, int protocol, unsigned
     }
 
     server.launch = launch;
+    printf("Server Listo");
+
+    printf("El valor de ip es: %lu\n", server.interface);
 
     return server;
 }
