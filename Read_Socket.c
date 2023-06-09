@@ -1,9 +1,4 @@
-#include <unistd.h>
-#include <errno.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <unistd.h>
+
 #include "Read_Socket.h"
 
 char *ReadRequest(int fd, int n)
@@ -21,7 +16,7 @@ char *ReadRequest(int fd, int n)
       // Cant maxima de bites a leer
       nread = read(fd, bufp, nleft);
       // Si la cant de bites leidos coincide con la cant de bites que se pueden leer
-      if (nread == nleft)
+      if ((size_t)nread == nleft)
       {
          // Si termina en "\r\n\r\n" entonces ya se leyó todo  la informacion y se para
          if (strncmp(bufp + nread - 4, "\r\n\r\n", 4) == 0)

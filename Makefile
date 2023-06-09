@@ -1,16 +1,26 @@
 CC = gcc
 CFLAGS = -Wall -Wextra
 
-all: test
+# Lista de archivos fuente (.c) en la carpeta
+SOURCES = $(wildcard *.c)
 
-test: server.o test.o
-	$(CC) $(CFLAGS) -o test server.o test.o
+# Genera los nombres de los archivos objeto (.o) a partir de los archivos fuente
+OBJECTS = $(SOURCES:.c=.o)
 
-server.o: server.c server.h
-	$(CC) $(CFLAGS) -c server.c
+# Nombre del ejecutable final
+TARGET = program
 
-test.o: test.c server.h
-	$(CC) $(CFLAGS) -c test.c
+all: $(TARGET)
+
+$(TARGET): $(OBJECTS)
+	$(CC) $(CFLAGS) $^ -o $@
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f *.o test
+	rm -f $(OBJECTS) $(TARGET)
+
+.PHONY: clean
+
+

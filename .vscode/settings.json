@@ -1,7 +1,10 @@
 {
     "files.associations": {
         "*.pl": "prolog",
-        "in.h": "c"
+        "in.h": "c",
+        "read_socket.h": "c",
+        "server_gestion.h": "c",
+        "html_gestion.h": "c"
     },
     "cmake.sourceDirectory": "/home/Proyects/SO/Web Server Final"
 }
