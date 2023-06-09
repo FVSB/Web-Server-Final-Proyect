@@ -58,15 +58,8 @@ void launch(struct Server *server, char *orig_path)
         if (strcmp(method, "GET") == 0)
         {
             printf("invi \n");
-            HTMLerror(new_socket, method, "501", "Not Implemented", "Web Server doesn't implement this method");
-            // Get_Petition(new_socket, uri, orig_path, list, list_len, button);
-        }
-        // Caso petición "Post" por añadir
 
-        else
-        {
-            printf("LLEgo al else \n");
-            // HTMLerror(new_socket, method, "501", "Not Implemented", "Web Server doesn't implement this method");
+            Get_Petition(new_socket, uri, orig_path, list, list_len, button);
         }
 
         // Escribir la pagina de prueba
