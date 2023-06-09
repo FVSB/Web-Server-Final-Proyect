@@ -23,7 +23,25 @@ void Server_Response(int new_socket, char *uri, char *buff,
         printf("invi");
         Get_Petition(new_socket, uri, orig_path, list, list_len, button);
     }
-    // Caso petición "Post" por añadir
+    // Caso petición "Post"
+    else if (strcmp(method, "POST") == 0)
+    {
+        char *p = strchr(uri, '~');
+        char *c = strchr(p + 1, '~');
+        *c = '\0';
+        c++;
+        int opt = (int)*(p + 1) - 48;
+        opt += (((int)*(c)-48) % 2);
+        *p = '\0';
+        list = Initialize(uri, &list_len);
+        SortBy(&list, list_len, comparer[opt]);
+        char nxt = '1';
+        if (opt % 2)
+        {
+            nxt = '0';
+        }
+        HTMLresponse(list, uri, connected_fd, button, nxt);
+    }
 
     else
     {
