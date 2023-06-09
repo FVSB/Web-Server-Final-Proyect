@@ -12,7 +12,6 @@
 void launch(struct Server *server, char *orig_path)
 
 {
-    char *hello = "HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 12\n\nHello world!";
 
     int size = 100;
     char *buffer;
@@ -40,35 +39,10 @@ void launch(struct Server *server, char *orig_path)
         // Separar Salida en 3 cadenas
         sscanf(buffer, "%s %s %s", method, uri, version);
         printf("Entrar a responder \n");
-        // Server_Response(new_socket, uri, buffer, orig_path, button, method, list, list_len);
+        Server_Response(new_socket, uri, buffer, orig_path, button, method, list, list_len);
 
-        printf("Entro a respuesta de la peticion");
-        uri = Uri_parser(uri);
-        buffer = NULL;
-        printf(" Check 1 \n");
-        // Si es la misma dirección que se paso como entrada
-        if (strcmp(uri, orig_path) != 0)
-        {
-            // última aparación del /
-            button = strrchr(uri, '/');
-        }
-        else
-            button = uri;
-        // Si el tipo de petición es Get
-        if (strcmp(method, "GET") == 0)
-        {
-            printf("invi \n");
-
-            Get_Petition(new_socket, uri, orig_path, list, list_len, button);
-        }
-
-        // Escribir la pagina de prueba
-
-        // write(new_socket, hello, strlen(hello));
-
-        // Cerrar conexion
+               // Cerrar conexion
         printf("Conexion cerrada\n");
-
         close(new_socket);
     }
     close(server->socket);

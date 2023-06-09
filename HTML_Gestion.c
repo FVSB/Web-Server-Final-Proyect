@@ -11,7 +11,7 @@ int HTMLresponse(DirLinkedList *list, char *path, int fd, char *button, char nxt
     sprintf(buff, "%s<th>Type<form method=\"post\" action=\"%s~6~%c\"><input type=\"submit\"  value=\" &uarr;&darr; \"></form></th></tr>", buff, button + 1, nxt);
     while (list != NULL)
     {
-        if (strlen(buff) >= size - 500)
+        if ((int)strlen(buff) >= (size - 500))
         {
             size *= 2;
             buff = realloc(buff, size);

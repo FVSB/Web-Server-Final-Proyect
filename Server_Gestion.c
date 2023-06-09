@@ -1,6 +1,8 @@
+#include <stdio.h>
 #include "Server_Gestion.h"
+
 void Server_Response(int new_socket, char *uri, char *buff,
-                     char **orig_path, char *button, char method, DirLinkedList *list,
+                     char *orig_path, char *button, char *method, DirLinkedList *list,
                      int list_len)
 {
     printf("Entro a respuesta de la peticion");
@@ -29,9 +31,9 @@ void Server_Response(int new_socket, char *uri, char *buff,
     }
 }
 
-void Get_Petition(int new_socket, char *uri, char **orig_path, DirLinkedList *list, int list_len, char *button)
+void Get_Petition(int new_socket, char *uri, char *orig_path, DirLinkedList *list, int list_len, char *button)
 {
-    printf("ENtro a GetPetition");
+
     // Piensa si estas en la carpeta raiz
     if (strcmp(uri, "/") == 0)
     { // Por defecto se entraria a la raiz que se introdujo al iniciar el programa

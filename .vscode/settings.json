@@ -4,7 +4,9 @@
         "in.h": "c",
         "read_socket.h": "c",
         "server_gestion.h": "c",
-        "html_gestion.h": "c"
+        "html_gestion.h": "c",
+        "server.h": "c"
     },
-    "cmake.sourceDirectory": "/home/Proyects/SO/Web Server Final"
+    "cmake.sourceDirectory": "/home/Proyects/SO/Web Server Final",
+    "C_Cpp.errorSquiggles": "disabled"
 }
