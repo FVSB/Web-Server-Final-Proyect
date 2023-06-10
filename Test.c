@@ -38,45 +38,6 @@ void launch(struct Server *server, char *orig_path)
 
     close(server->socket);
 }
-/*
-void launch(struct Server *server, char *orig_path)
-
-{
-
-    int size = 100;
-    char *buffer;
-    char method[10];
-    char *uri = calloc(1, 1000);
-    char version[10];
-    int list_len = 0;
-    char *button;
-    DirLinkedList *list;
-
-    // Longitud de la direccion
-    int address_len = sizeof(server->address);
-
-    while (1)
-    {
-        printf(" Esperando conexion \n");
-        int new_socket;
-        new_socket = accept(server->socket,
-                            (struct sockaddr *)&server->address,
-                            (socklen_t *)&address_len);
-        printf("Aceptada la conexion");
-        // Leer el mensaje del cliente
-        buffer = ReadRequest(new_socket, size);
-        printf("%s\n", buffer);
-        // Separar Salida en 3 cadenas
-        sscanf(buffer, "%s %s %s", method, uri, version);
-        printf("Entrar a responder \n");
-        Server_Response(new_socket, uri, buffer, orig_path, button, method, list, list_len);
-
-               // Cerrar conexion
-        printf("Conexion cerrada\n");
-        close(new_socket);
-    }
-    close(server->socket);
-}*/
 
 int main(int argc, char **argv)
 {
