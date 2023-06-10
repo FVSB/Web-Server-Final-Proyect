@@ -1,4 +1,7 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "Server_Gestion.h"
 
 void Server_Response(int new_socket, char *uri, char *buff,

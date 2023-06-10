@@ -1,3 +1,6 @@
+#include <stdlib.h>
+#include <string.h>
+
 #include "Directory_Management.h"
 // Envia un directorio
 DirLinkedList *Initialize(char *directory, int *n)
