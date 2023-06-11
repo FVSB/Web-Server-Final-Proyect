@@ -1,5 +1,5 @@
 # Web-Server-Final-Project
-Autores: Del aula 212: Carla Pérez(nick), Francisco Vicente Suárez(@FVSB), Jan Carlos Pérez(ww@JCarlosPG).
+Autores: Del aula 212: Carla Pérez(@carlapvalera), Francisco Vicente Suárez(@FVSB), Jan Carlos Pérez(ww@JCarlosPG).
 
 Segundo Proyecto Sistemas Operativos, Facultad de Matemática y Computación, Universidad de La Habana.
 
@@ -20,23 +20,21 @@ Luego de crear el socket se configura el servidor usando *setsockopt* para
 que este termine y se reinicie automáticamente, se le asigna una dirección y el
 puerto mediante la función *bind* y finalmente se le indica al FD del
 servidor que es un listening descriptor mediante la función *listen*.
-Luego de esto se inicia un bucle donde se acepta la conexión usando la función *accept*, se lee el FD del cliente, se parse la uri de hexadecimal
-a decimal, se reponde la petición del cliente y se cierra el FD del cliente._(aqui introducir lo de los hilos)_
+Luego de esto se inicia un bucle donde se crea el socket servidor y se escucha a la espera de conexiones venideras. Cuando la conexión es aceptada se crea un nuevo hilo para el cliente. La función _accept_ bloquea hasta que un cliente se conecte con el servidor y _handle_client_ es llamada en el nuevo hilo y recible el socket descriptor como un arguemento. Esta función también lee informacion del cliente y envía información de vuelta al cliente.
 # 3)Peticiones y respuestas(Requests and responses):
 El servidor muestra los directorios y archivos que se encuentran en el serving directory y permite navegar entre los distintos directorios.
 
 El servidor responde a peticiones de tipo GET y POST de HTTP, los demás métodos que no están implementados provocan una respuesta
-¨Error 501 not implemented¨._(preguntar)_. La request de tipo GET se tiene cuando se hace click sobre el enlace de algún directorio
+de error. La request de tipo GET se tiene cuando se hace click sobre el enlace de algún directorio
 (genera un HTML con los subdirectorios) o sobre un archivo(descarga el archivo en el dispositvo cliente).
 
 Las peticiones de tipo POST son enviadas al servidor cuando el clienta presiona algún botón de la página, estos sirven para ordenar los
 directorios y archivos atendiendo a los diferentes criterios de ordenación implementados.
-
-Para leer las peticiones del usuario se utiliza la función _read_ y para escribir la respuesta del servidor se emplea la función _write_, 
-ambas definidas en el archivo _nombre del archivo.c_, estas tienen en cuenta los shortcounts y manejan el caso de interrupción 
+VER TODO ESTO:
+Para leer las peticiones del usuario se utiliza la función _read_ y para escribir la respuesta del servidor se emplea la función _write_,
+estas tienen en cuenta los shortcounts y manejan el caso de interrupción 
 de lectura/escritura por error EINTR. Para identificar si la uri de la petición corresponde a una carpeta o a un archivo se utiliza
 la función _stat_ para saber si existe y después se analiza si es un directorio o un archivo usando S_ISDIR y se hace lo que especificó anteriormente.
-Si _stat_ devolviera un valor menor que cero entonces se responde con "Error 404 Not Found".
 
 Cuando S_ISDIR devuelve 1, entonces se procede a abrir el directorio con la función _opendir_ y se extrae la información de las subcarpetas
 usando _readdir_ y esta se almacena en una _linked list(preguntar)_ que se encuentra en declarada en el archivo _archivo.h_, luego se genera un
@@ -51,7 +49,11 @@ Las request de método POST devuelven al usuario los subdirectorios del director
 anterioridad atendiendo al criterio seleccionado, para esto procede exactamente igual que si se pidiera un directorio,
 es decir se hace un HTML y un encabezado HTTP los cuales se escriben en el FD del cliente.
 
+# 4) Ordenacion:
+Para comparar se usa lo implementado en el fichero _Directory_Management.c_ y su método _SortBy()_, el cual recibe tre parámetros, un puntero hacia la cabeza de la lista enlazda, un entero n que significa el número de elementos en la lista y un puntero hacia la función que compara los elementos de la lista. La función _SortBy()_ uso de ciclos necesarios para iterar sobre los elementos de la lista, comparándolos usando el _comparer()_ y si dos elementos adayancentes están fuera de orden se swappean usando _SwapDirLinkedList_.
 
+# 5) Concurrencia con hilos:
+EXPLICAR ESO AQUI.
 
 
 
