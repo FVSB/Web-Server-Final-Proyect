@@ -10,6 +10,7 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include <sys/types.h>
+#include <sys/socket.h>
 
 int Download(int fd, char *filename, long int size);
 
