@@ -30,18 +30,18 @@ de error. La request de tipo GET se tiene cuando se hace click sobre el enlace d
 
 Las peticiones de tipo POST son enviadas al servidor cuando el clienta presiona algún botón de la página, estos sirven para ordenar los
 directorios y archivos atendiendo a los diferentes criterios de ordenación implementados.
-VER TODO ESTO:
+
 Para leer las peticiones del usuario se utiliza la función _read_ y para escribir la respuesta del servidor se emplea la función _write_,
 estas tienen en cuenta los shortcounts y manejan el caso de interrupción 
 de lectura/escritura por error EINTR. Para identificar si la uri de la petición corresponde a una carpeta o a un archivo se utiliza
 la función _stat_ para saber si existe y después se analiza si es un directorio o un archivo usando S_ISDIR y se hace lo que especificó anteriormente.
 
-Cuando S_ISDIR devuelve 1, entonces se procede a abrir el directorio con la función _opendir_ y se extrae la información de las subcarpetas
-usando _readdir_ y esta se almacena en una _linked list(preguntar)_ que se encuentra en declarada en el archivo _archivo.h_, luego se genera un
+Cuando S_ISDIR devuelve 1, entonces se procede a abrir el directorio y se extrae la información de las subcarpetas
+usando y esta se almacena en una _DirLinkedList_, la cual guarda la información de todos los directorios, luego se genera un
 documento HTML con toda la información recogida y el respectivo encabezado HTTP que indica al navegador cómo interpretar lo que está en el
-HTML, luego ambos se escriben en el FD del cliente.
+HTML, luego ambos se escriben en el FD del cliente. Si la dirección que se pasó no existe entonces se envia una respuesta con error 404
 
-Cuando S_ISDIR devuelve 0 entonces es una petición de descarga, y para enviar el archivo se usa la función _sendfile_, inicialmemte se genera
+Cuando S_ISDIR devuelve 0 entonces es una petición de descarga, inicialmemte se genera
 el encabezado HTTP de descarga identificando el MIME-Type: application/octet-stream indicando que se va a realizar una descarga, 
 se ecribe el encabezado en el FD del cliente y luego se manda el archivo.
 
@@ -53,8 +53,7 @@ es decir se hace un HTML y un encabezado HTTP los cuales se escriben en el FD de
 Para comparar se usa lo implementado en el fichero _Directory_Management.c_ y su método _SortBy()_, el cual recibe tre parámetros, un puntero hacia la cabeza de la lista enlazda, un entero n que significa el número de elementos en la lista y un puntero hacia la función que compara los elementos de la lista. La función _SortBy()_ uso de ciclos necesarios para iterar sobre los elementos de la lista, comparándolos usando el _comparer()_ y si dos elementos adayancentes están fuera de orden se swappean usando _SwapDirLinkedList_.
 
 # 5) Concurrencia con hilos:
-EXPLICAR ESO AQUI.
-
+Para simular que varios clientes puedan realizar peticiones, lo que se hace, básicamente es que cada vez que se acepta una conexión se crea un nuevo hilo, ya que cada hilo es una unidad de ejecución que puede manejar una solicitud de cliente, es mejor, en lo que se refiere a eficiencia usar hilos que procesos, ya que los hilos comparten el mismo espacio de memoria y las mismas estructuras de datos que el núcleo.
 
 
 
