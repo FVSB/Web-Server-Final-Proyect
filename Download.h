@@ -9,8 +9,9 @@
 #include <sys/sendfile.h>
 #include <sys/stat.h>
 #include <errno.h>
+#include <sys/types.h>
 
-int Download(int fd, char *filename, int size);
+int Download(int fd, char *filename, long int size);
 
 
 #endif
