@@ -16,7 +16,7 @@ int Download(int fd, char *filename, long int size)
     sprintf(buff, "%sMIME-Version: 1.0\r\n", buff);
     sprintf(buff, "%sContent-Type: application/octet-stream\r\n", buff);
     sprintf(buff, "%sContent-Disposition: attachment; filename=\"%s\"\r\n", buff, strrchr(filename, '/') + 1);
-    sprintf(buff, "%sContent-Length: %d \r\n\r\n", buff, size);
+    sprintf(buff, "%sContent-Length: %ld \r\n\r\n", buff, size);
 
     // Enviar la confirmación
     write(fd, buff, strlen(buff));
@@ -33,10 +33,14 @@ int Download(int fd, char *filename, long int size)
 
     off_t offset = 0;
     ssize_t bytes_sent;
+    ssize_t chunk_size = 1024 * 1024; // Tamaño del pedazo en bytes (1 MB)
 
     while (size > 0)
     {
-        bytes_sent = sendfile(fd, filefd, &offset, size);
+        if (size < chunk_size)
+            chunk_size = size;
+
+        bytes_sent = sendfile(fd, filefd, &offset, chunk_size);
         if (bytes_sent == -1)
         {
             printf("Error sending file\n");
